@@ -19,12 +19,25 @@ from app.logging_setup import get_logger
 import plotly.graph_objects as go
 import yfinance as yf
 import math
+import os
 import streamlit.components.v1 as components
 
 BELL_PATH = Path("assets/bell.wav")
 
 load_dotenv()
 logger = get_logger()
+
+def get_setting(name: str, default: str | None = None) -> str | None:
+    if name in st.secrets:
+        return st.secrets[name]
+    return os.getenv(name, default)
+
+SENDGRID_API_KEY = get_setting("SENDGRID_API_KEY")
+FROM_EMAIL = get_setting("FROM_EMAIL", "no-reply@example.com")
+DATABASE_URL = get_setting("DATABASE_URL", "sqlite:///./portfolio.db")
+
+if not SENDGRID_API_KEY:
+    st.warning("Email is disabled: SENDGRID_API_KEY not set.")
 
 # --- DB init ---
 from app.db import Base  # noqa: E402
