@@ -8,5 +8,4 @@ requests==2.32.3
 sendgrid==6.11.0
 yfinance==0.2.36
 plotly
-components
 
